@@ -1,3 +1,10 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Import all of Tailwind's styles */
+@import "tailwindcss";
+
+/* Add your custom theme configurations here */
+@theme {
+  --color-primary: #6366f1; /* Creates bg-primary, text-primary, etc. */
+  --color-secondary: #ec4899;
+
+  --font-sans: "Inter", system-ui, sans-serif; /* Overrides the default sans font */
+}

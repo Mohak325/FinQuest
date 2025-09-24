@@ -1,10 +1,34 @@
+import { useState } from 'react';
+import LandingPage from './Landingpage.jsx';
+import LoginPage from './loginpg.jsx';
+import SignUpPage from './signup.jsx';
+
 function App() {
+  // State to control which page is visible: 'landing', 'signup', or 'login'
+  const [currentPage, setCurrentPage] = useState('landing');
+
+  // Functions to switch between pages
+  const showSignUpPage = () => setCurrentPage('signup');
+  const showLoginPage = () => setCurrentPage('login');
+
+  // Function to render the correct page based on the state
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'signup':
+        return <SignUpPage onSwitchToLogin={showLoginPage} />;
+      case 'login':
+        return <LoginPage onSwitchToSignUp={showSignUpPage} />;
+      case 'landing':
+      default:
+        return <LandingPage onGetStarted={showSignUpPage} />;
+    }
+  };
+
   return (
-    <div className="bg-slate-900 text-white min-h-screen flex flex-col items-center justify-center">
-      <h1 className="text-5xl font-bold text-primary">FinQuest</h1>
-      <p className="mt-4 text-lg font-sans">Your financial journey starts here.</p>
+    <div>
+      {renderPage()}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

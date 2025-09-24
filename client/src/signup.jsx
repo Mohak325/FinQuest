@@ -2,7 +2,7 @@ import React from "react";
 
 export default function SignUpPage() {
   return (
-    <div className="min-h-full min-w-full bg-black text-gray-100 flex items-center justify-center sm:px-4 md:px-6 py-2 sm:py-4 md:py-6">
+    <div className="min-h-screen min-w-screen bg-black text-gray-100 flex items-center justify-center sm:px-4 md:px-6 py-2 sm:py-4 md:py-6">
       <div className="bg-black flex flex-col md:flex-row w-full max-w-sm md:max-w-6xl rounded-lg shadow-lg overflow-hidden border border-green-700/50 mx-4 sm:mx-6 md:mx-0">
         
         {/* Left Section: Logo and Slogan */}

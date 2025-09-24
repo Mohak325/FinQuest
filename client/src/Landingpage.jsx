@@ -1,6 +1,14 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; // 1. Import useNavigate
 
-const LandingPage = ({ onGetStarted }) => {
+const LandingPage = () => {
+  const navigate = useNavigate(); // 2. Get the navigate function
+
+  // 3. This function will now handle the navigation
+  const handleGetStarted = () => {
+    navigate('/signup'); // Navigate to the /signup route
+  };
+
   return (
     <div className="bg-black text-white min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
       {/* Left Arm Image */}
@@ -28,7 +36,7 @@ const LandingPage = ({ onGetStarted }) => {
 
         {/* Get Started Button */}
         <button
-          onClick={onGetStarted}
+          onClick={handleGetStarted} // 4. Call the new handler function
           className="bg-transparent border-2 border-green-500 text-green-500 font-bold py-3 px-8 rounded-full hover:bg-green-500 hover:text-black transition duration-300 ease-in-out"
         >
           GET STARTED

@@ -1,28 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import authService from './services/authService';
 
-// Added props to handle navigation
-const LoginPage = ({ onSwitchToSignUp, onLoginSuccess }) => {
+const LoginPage = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      await authService.login(email, password);
+      navigate('/dashboard');
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || 'An error occurred during login.';
+      alert(`Login Failed: ${errorMessage}`);
+    }
+  };
+
   return (
     <div className="min-h-screen w-full bg-black text-gray-100 flex items-center justify-center sm:px-4 md:px-6 py-2 sm:py-4 md:py-6">
       <div className="bg-black flex flex-col md:flex-row w-full max-w-sm md:max-w-6xl rounded-lg shadow-lg overflow-hidden border border-green-700/50 mx-4 sm:mx-6 md:mx-0">
         <div className="md:w-1/2 bg-[#1A1A1A] p-6 sm:p-8 flex flex-col items-center justify-center space-y-3 sm:space-y-4 border-b md:border-b-0 md:border-r border-green-700/50">
-          <img
-            src="/logo.png"
-            alt="FinQuest Logo"
-            className="w-36 sm:w-48 md:w-56 lg:w-64 h-auto mb-3"
-          />
+          <img src="/logo.png" alt="FinQuest Logo" className="w-36 sm:w-48 md:w-56 lg:w-64 h-auto mb-3" />
         </div>
         <div className="md:w-1/2 p-6 sm:p-8 flex flex-col justify-center space-y-4 sm:space-y-5">
           <h1 className="text-2xl sm:text-3xl font-bold text-center mb-4 sm:mb-6">Login</h1>
-          <form className="w-full space-y-4 sm:space-y-5 text-sm sm:text-base" onSubmit={(e) => e.preventDefault()}>
+          <form className="w-full space-y-4 sm:space-y-5 text-sm sm:text-base" onSubmit={handleLogin}>
             <div className="relative">
-              <input placeholder="Email" type="email" className="w-full bg-transparent border-b-2 border-gray-600 focus:border-green-500 outline-none py-2 transition-colors duration-300"/>
+              <input placeholder="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="w-full bg-transparent border-b-2 border-gray-600 focus:border-green-500 outline-none py-2 transition-colors duration-300"/>
             </div>
             <div className="relative">
-              <input placeholder="Password" type="password" className="w-full bg-transparent border-b-2 border-gray-600 focus:border-green-500 outline-none py-2 transition-colors duration-300"/>
+              <input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className="w-full bg-transparent border-b-2 border-gray-600 focus:border-green-500 outline-none py-2 transition-colors duration-300"/>
             </div>
-            {/* Added onClick to trigger navigation to the dashboard */}
-            <button type="button" onClick={onLoginSuccess} className="w-full bg-green-600 hover:bg-green-700 text-white font-mono font-bold py-2.5 rounded-md transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-500">
+            <button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-white font-mono font-bold py-2.5 rounded-md transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-500">
               Login
             </button>
             <div className="text-center text-gray-400">or</div>
@@ -31,8 +42,7 @@ const LoginPage = ({ onSwitchToSignUp, onLoginSuccess }) => {
                 <span>Login with Google</span>
             </button>
             <div className="text-center mt-4 text-xs sm:text-sm">
-              Don't have an account? {/* Added onClick to switch to the sign-up page */}
-              <button type="button" onClick={onSwitchToSignUp} className="text-green-400 hover:underline">Sign Up</button>
+              Don't have an account? <Link to="/signup" className="text-green-400 hover:underline">Sign Up</Link>
             </div>
           </form>
         </div>

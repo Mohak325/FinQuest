@@ -1,5 +1,5 @@
 // src/controllers/analysisController.js
-const { generateAnalysisReport } = require('../utils/apiHelpers');
+const { generateAnalysisReport } = require('../utils/apihelper');
 const User = require('../models/User');
 
 exports.getAnalysis = async (req, res, next) => {

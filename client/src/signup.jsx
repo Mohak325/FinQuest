@@ -1,31 +1,44 @@
-import React from "react";
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import authService from './services/authService';
 
-// Added props to handle navigation
-export default function SignUpPage({ onSwitchToLogin, onSignUpSuccess }) {
+export default function SignUpPage() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    try {
+      await authService.signup(name, email, password);
+      alert('Signup successful! Please log in.');
+      navigate('/login');
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || 'An error occurred during signup.';
+      alert(`Signup Failed: ${errorMessage}`);
+    }
+  };
+
   return (
     <div className="min-h-screen min-w-screen bg-black text-gray-100 flex items-center justify-center sm:px-4 md:px-6 py-2 sm:py-4 md:py-6">
       <div className="bg-black flex flex-col md:flex-row w-full max-w-sm md:max-w-6xl rounded-lg shadow-lg overflow-hidden border border-green-700/50 mx-4 sm:mx-6 md:mx-0">
         <div className="md:w-1/2 bg-[#1A1A1A] p-6 sm:p-8 flex flex-col items-center justify-center space-y-3 sm:space-y-4 border-b md:border-b-0 md:border-r border-green-700/50">
-          <img
-            src="/logo.png"
-            alt="FinQuest Logo"
-            className="w-36 sm:w-48 md:w-56 lg:w-64 h-auto mb-3"
-          />
+          <img src="/logo.png" alt="FinQuest Logo" className="w-36 sm:w-48 md:w-56 lg:w-64 h-auto mb-3" />
         </div>
         <div className="w-full md:w-1/2 flex items-center justify-center mt-8 md:mt-0 p-6">
-          <form className="w-full space-y-4 sm:space-y-5 text-sm sm:text-base" onSubmit={(e) => e.preventDefault()}>
+          <form className="w-full space-y-4 sm:space-y-5 text-sm sm:text-base" onSubmit={handleSignup}>
             <h1 className="text-2xl sm:text-3xl font-bold text-center mb-4 sm:mb-6">Create Account</h1>
             <div className="relative">
-                <input placeholder="Username" type="text" className="w-full bg-transparent border-b-2 border-gray-600 focus:border-green-500 outline-none py-2 transition-colors duration-300"/>
+                <input placeholder="Username" type="text" value={name} onChange={(e) => setName(e.target.value)} required className="w-full bg-transparent border-b-2 border-gray-600 focus:border-green-500 outline-none py-2 transition-colors duration-300"/>
             </div>
             <div className="relative">
-                <input placeholder="Email" type="email" className="w-full bg-transparent border-b-2 border-gray-600 focus:border-green-500 outline-none py-2 transition-colors duration-300"/>
+                <input placeholder="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="w-full bg-transparent border-b-2 border-gray-600 focus:border-green-500 outline-none py-2 transition-colors duration-300"/>
             </div>
             <div className="relative">
-                <input placeholder="Password" type="password" className="w-full bg-transparent border-b-2 border-gray-600 focus:border-green-500 outline-none py-2 transition-colors duration-300"/>
+                <input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className="w-full bg-transparent border-b-2 border-gray-600 focus:border-green-500 outline-none py-2 transition-colors duration-300"/>
             </div>
-            {/* Added onClick to trigger navigation to the dashboard */}
-            <button type="button" onClick={onSignUpSuccess} className="w-full bg-green-600 hover:bg-green-700 text-white font-mono font-bold py-2.5 rounded-md transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-500">
+            <button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-white font-mono font-bold py-2.5 rounded-md transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-500">
               Sign Up
             </button>
             <div className="text-center text-gray-400">or</div>
@@ -34,8 +47,7 @@ export default function SignUpPage({ onSwitchToLogin, onSignUpSuccess }) {
                 <span>Sign up with Google</span>
             </button>
             <div className="text-center mt-4 text-xs sm:text-sm">
-              Already have an account? {/* Added onClick to switch to the login page */}
-              <button type="button" onClick={onSwitchToLogin} className="text-green-400 hover:underline">Log in</button>
+              Already have an account? <Link to="/login" className="text-green-400 hover:underline">Log in</Link>
             </div>
           </form>
         </div>

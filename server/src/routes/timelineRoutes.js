@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/authMiddleware');
-const { createEvent, getTimeline } = require('../controllers/timelineController');
+const { createEvent, getTimeline } = require('../controllers/timelineConteoller');
 
 router.post('/', auth, createEvent);
 router.get('/', auth, getTimeline);

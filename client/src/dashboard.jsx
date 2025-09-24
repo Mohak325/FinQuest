@@ -1,39 +1,32 @@
 import React, { useState } from 'react';
-
-// --- Helper Components ---
-
-const Icon = ({ src, alt, className = '' }) => (
-  <img src={src} alt={alt} className={`w-8 h-8 ${className}`} />
-);
-
-const NavLink = ({ children }) => (
-  <a
-    href="#"
-    className="text-white uppercase tracking-widest hover:text-green-400 transition-colors duration-300"
-  >
-    {children}
-  </a>
-);
-
-// The vertical padding `py-20` has been increased to make the button taller
-const ActionButton = ({ children, className = '' }) => (
-  <button
-    className={`bg-black border-2 border-green-400 rounded-2xl text-white uppercase text-2xl tracking-widest py-33 px-6 hover:bg-green-900 hover:border-green-500 transition-all duration-300 w-full ${className}`}
-  >
-    {children}
-  </button>
-);
-
-// --- Main Dashboard Component ---
+import { useNavigate } from 'react-router-dom'; // 1. Import useNavigate
 
 export default function Dashboard() {
   const [progress, setProgress] = useState(33);
+  const navigate = useNavigate(); // 2. Initialize the navigate function
+
+  // 3. Create a handler to navigate to the investment page
+  const handleInvestmentClick = () => {
+    navigate('/investment');
+  };
+
+  const Icon = ({ src, alt, className = '' }) => <img src={src} alt={alt} className={`w-8 h-8 ${className}`} />;
+
+  const NavLink = ({ children, onClick }) => (
+    <a href="#" onClick={onClick} className="text-white uppercase tracking-widest hover:text-green-400 transition-colors duration-300">
+      {children}
+    </a>
+  );
+  
+  const ActionButton = ({ children, onClick, className = '' }) => (
+    <button onClick={onClick} className={`bg-black border-2 border-green-400 rounded-2xl text-white uppercase text-2xl tracking-widest py-28 px-6 hover:bg-green-900 hover:border-green-500 transition-all duration-300 w-full ${className}`}>
+      {children}
+    </button>
+  );
 
   return (
     <div className="bg-black min-h-screen font-['VT323',_monospace] text-white p-4 sm:p-8">
-      <style>
-        {`@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');`}
-      </style>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');`}</style>
       <header className="flex justify-between items-center pb-8 border-b-2 border-gray-800">
         <div className="flex items-center gap-4">
           <Icon src="/mascot.png" alt="Finquest Mascot" className="w-12 h-12" />
@@ -41,7 +34,8 @@ export default function Dashboard() {
         <nav className="hidden lg:flex items-center gap-8 text-lg">
           <NavLink>Home</NavLink>
           <NavLink>Analysis</NavLink>
-          <NavLink>Investment</NavLink>
+          {/* 4. Attach the click handler to the navbar link */}
+          <NavLink onClick={handleInvestmentClick}>Investment</NavLink>
           <NavLink>Banking</NavLink>
         </nav>
         <div className="flex items-center gap-4 text-lg">
@@ -50,6 +44,7 @@ export default function Dashboard() {
         </div>
       </header>
       <main className="mt-8">
+        {/* Journey and Progress Sections remain unchanged */}
         <section className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
           <h1 className="text-3xl uppercase tracking-widest">Journey</h1>
           <p className="text-lg text-gray-400 mt-2 sm:mt-0">ACCOUNT BALANCE: 10000</p>
@@ -57,20 +52,10 @@ export default function Dashboard() {
         <section className="mb-12">
           <div className="relative w-full">
             <div className="h-8 bg-gray-900 border-2 border-green-400 rounded-full">
-              <div
-                className="h-full bg-green-400 rounded-full transition-all duration-500"
-                style={{ width: `${progress}%` }}
-              ></div>
+              <div className="h-full bg-green-400 rounded-full transition-all duration-500" style={{ width: `${progress}%` }}></div>
             </div>
-            <div
-              className="absolute top-1/2 -translate-y-1/2 transition-all duration-500"
-              style={{ left: `calc(${progress}% - 20px)` }}
-            >
-              <img
-                src="/loadingimg.png"
-                alt="Progress Indicator"
-                className="w-10 h-10"
-              />
+            <div className="absolute top-1/2 -translate-y-1/2 transition-all duration-500" style={{ left: `calc(${progress}% - 20px)` }}>
+              <img src="/loadingimg.png" alt="Progress Indicator" className="w-10 h-10" />
             </div>
           </div>
           <p className="text-center text-green-400 mt-2 text-lg">{progress}%</p>
@@ -86,11 +71,11 @@ export default function Dashboard() {
         </section>
         
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <ActionButton>Investment</ActionButton>
+          {/* 5. Attach the click handler to the action button */}
+          <ActionButton onClick={handleInvestmentClick}>Investment</ActionButton>
           <ActionButton>Banking</ActionButton>
         </section>
       </main>
     </div>
   );
 };
-

@@ -12,6 +12,7 @@ const questRoutes = require('./routes/questRoutes');
 const forumRoutes = require('./routes/forumRoutes');
 const analysisRoutes = require('./routes/analysisRoutes');
 const timelineRoutes = require('./routes/timelineRoutes');
+const stockRoutes = require('./routes/stockRoutes');
 
 const { errorHandler } = require('./middleware/errorMiddleware');
 
@@ -31,6 +32,7 @@ app.use('/api/quests', questRoutes);
 app.use('/api/forum', forumRoutes);
 app.use('/api/analysis', analysisRoutes);
 app.use('/api/timeline', timelineRoutes);
+app.use('/api/stocks',stockRoutes);
 
 // health check
 app.get('/health', (req, res) => res.json({ status: 'ok' }));

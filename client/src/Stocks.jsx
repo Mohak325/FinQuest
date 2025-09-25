@@ -15,8 +15,8 @@ const NavLink = ({ children, onClick }) => (
 const Stocks = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('profitability');
-  const [amount, setAmount] = useState(70);
-  const [duration, setDuration] = useState(1);
+  const [price, setPrice] = useState(70); // Renamed from amount
+  const [quantity, setQuantity] = useState(1); // Renamed from duration
   const [assets, setAssets] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const assetTickers = ['AAPL', 'GOOGL', 'GLD', 'MSFT', 'TSLA'];
@@ -29,7 +29,6 @@ const Stocks = () => {
       );
       const resolvedData = await Promise.all(assetDataPromises);
 
-      // This robust formatting logic prevents the TypeError
       const formattedData = resolvedData
         .filter(data => data && data['01. symbol'])
         .map(data => {
@@ -73,6 +72,7 @@ const Stocks = () => {
       </header>
 
       <main className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Left Panel: Asset List */}
         <div className="border-2 border-green-500 rounded-lg p-4 space-y-4 h-fit">
           <div className="relative">
             <input type="text" placeholder="SEARCH" className="w-full bg-black border-2 border-gray-700 rounded-md p-2 pl-4 pr-10 text-lg tracking-widest focus:outline-none focus:border-green-500"/>
@@ -100,41 +100,43 @@ const Stocks = () => {
           </div>
         </div>
 
+        {/* Center Panel: Graph Placeholder */}
         <div className="flex items-center justify-center border-2 border-blue-500 rounded-lg p-8 text-center h-[20rem] lg:h-auto">
           <h2 className="text-3xl tracking-widest">SELECT COMPANY TO VISUALISE ITS GRAPH</h2>
         </div>
 
+        {/* Right Panel: Trading Controls */}
         <div className="space-y-4">
             <button className="w-full bg-green-500 text-black text-2xl font-bold py-3 rounded-md tracking-widest hover:bg-green-600 transition-colors">PAYMENTS</button>
             <div className="text-center bg-gray-900/50 border-2 border-gray-800 rounded-lg p-3">
                 <p className="text-gray-400 tracking-widest">CURRENT BALANCE:</p>
                 <p className="text-2xl">5000</p>
             </div>
+            {/* Price Card (Formerly Amount) */}
             <div className="text-center bg-gray-900/50 border-2 border-gray-800 rounded-lg p-3">
-                <p className="text-gray-400 tracking-widest">AMOUNT, INR</p>
+                <p className="text-gray-400 tracking-widest">PRICE(INR)</p>
                 <div className="flex items-center justify-center gap-4 mt-1">
-                    <button onClick={() => setAmount(a => Math.max(0, a - 10))} className="text-3xl p-1">-</button>
-                    <p className="text-2xl w-20">{amount}</p>
-                    <button onClick={() => setAmount(a => a + 10)} className="text-3xl p-1">+</button>
+                    <p className="text-2xl w-20">{price}</p>
                 </div>
             </div>
-             <div className="text-center bg-gray-900/50 border-2 border-gray-800 rounded-lg p-3">
-                <p className="text-gray-400 tracking-widest">DURATION</p>
-                 <div className="flex items-center justify-center gap-4 mt-1">
-                    <button onClick={() => setDuration(d => Math.max(1, d - 1))} className="text-3xl p-1">-</button>
-                    <p className="text-2xl w-20">{duration} MIN</p>
-                    <button onClick={() => setDuration(d => d + 1)} className="text-3xl p-1">+</button>
+            {/* Quantity Card (Formerly Duration) */}
+            <div className="text-center bg-gray-900/50 border-2 border-gray-800 rounded-lg p-3">
+                <p className="text-gray-400 tracking-widest">QUANTITY</p>
+                <div className="flex items-center justify-center gap-4 mt-1">
+                    <button onClick={() => setQuantity(q => Math.max(1, q - 1))} className="text-3xl p-1">-</button>
+                    <p className="text-2xl w-20">{quantity}</p>
+                    <button onClick={() => setQuantity(q => q + 1)} className="text-3xl p-1">+</button>
                 </div>
             </div>
+            {/* BUY and SELL Buttons */}
             <div className="flex gap-4">
-                <button className="w-1/2 bg-green-500 text-black py-3 rounded-md text-2xl font-bold tracking-widest flex items-center justify-center gap-2 hover:bg-green-600">UP ↑</button>
-                <button className="w-1/2 bg-red-500 text-black py-3 rounded-md text-2xl font-bold tracking-widest flex items-center justify-center gap-2 hover:bg-red-600">DOWN ↓</button>
+                <button className="w-1/2 bg-green-500 text-black py-3 rounded-md text-2xl font-bold tracking-widest flex items-center justify-center gap-2 hover:bg-green-600">BUY</button>
+                <button className="w-1/2 bg-red-500 text-black py-3 rounded-md text-2xl font-bold tracking-widest flex items-center justify-center gap-2 hover:bg-red-600">SELL</button>
             </div>
-             <div className="text-center bg-gray-900/50 border-2 border-gray-800 rounded-lg p-3">
+            <div className="text-center bg-gray-900/50 border-2 border-gray-800 rounded-lg p-3">
                 <p className="text-gray-400 tracking-widest">PROFIT: +INR62.3</p>
             </div>
         </div>
-        
       </main>
     </div>
   );
